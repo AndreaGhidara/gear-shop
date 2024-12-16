@@ -2,18 +2,18 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 
-const productsOnSale = ref([]);
+const messagesForOwner = ref([]);
 const headerTableTitles = ref([])
 
 
 function getSaleProducts() {
-    axios.get(`${import.meta.env.VITE_SERVER}/products/product-on-sale`)
+    axios.get(`${import.meta.env.VITE_SERVER}/messages/messages-for-owner`)
         .then(response => {
             console.log(response.data.data);
             if (response.data) {
                 headerTableTitles.value = Object.keys(response.data.data[0]);
 
-                productsOnSale.value = response.data.data;
+                messagesForOwner.value = response.data.data;
 
             }
 
@@ -44,13 +44,10 @@ onMounted(() => {
                 </tr>
             </thead>
             <tbody class="table-group-divider border-primary">
-                <tr v-for="product in productsOnSale">
-                    <th scope="row">{{ product.id }}</th>
-                    <td>{{ product.name }}</td>
-                    <td class="d-none d-md-table-cell">{{ product.description }}</td>
-                    <td class="d-none d-md-table-cell">{{ product.img || "No img" }}</td>
-                    <td>{{ product.price }}</td>
-                    <td>{{ product.discount }} %</td>
+                <tr v-for="message in messagesForOwner">
+                    <th scope="row">{{ message.name }}</th>
+                    <td class=" text-wrap">{{ message.email }}</td>
+                    <td>{{ message.message }} %</td>
                 </tr>
             </tbody>
         </table>

@@ -1,4 +1,5 @@
 <script setup>
+import TableMessages from '../components/TableMessages.vue';
 import TableProducts from '../components/TableProducts.vue';
 
 
@@ -6,9 +7,12 @@ import TableProducts from '../components/TableProducts.vue';
 
 <template>
     <div class="container">
-        <div class="row">
+        <div class="row d-flex flex-column ">
             <div class="col">
                 <TableProducts />
+            </div>
+            <div class="col">
+                <TableMessages />
             </div>
         </div>
     </div>
