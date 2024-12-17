@@ -24,7 +24,7 @@ const isFormInvalid = computed(() => {
 function sendMessage(data) {
     const server = 'http://localhost:3000'
 
-    axios.post(`${server}/message-for-owner`, data)
+    axios.post(`${server}/messages/message-for-owner`, data)
         .then(response => {
             console.log(response.data);
             alert("Messaggio inviato con successo!");
