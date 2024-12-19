@@ -106,7 +106,7 @@ async function deleted(id) {
     }
 
     try {
-        const response = await axios.delete(`${import.meta.env.VITE_SERVER}/products/delate/${id}`)
+        const response = await axios.delete(`${import.meta.env.VITE_SERVER}/products/delate/${id}`, { withCredentials: true })
 
         if (response.status === 200) {
             setAlert("warning", response.data.message);
@@ -138,7 +138,7 @@ async function addproduct(data, errors) {
     if (!errors.name && !errors.description && !errors.img && !errors.discount && !errors.price) {
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_SERVER}/products/addProduct`, data)
+            const response = await axios.post(`${import.meta.env.VITE_SERVER}/products/addProduct`, data, { withCredentials: true })
             if (response.status === 200) {
                 setAlert("success", response.data.message);
                 clearAllert();
@@ -171,7 +171,7 @@ async function editProduct(data) {
     if (!errors.name && !errors.description && !errors.img && !errors.discount && !errors.price) {
 
         try {
-            const response = await axios.put(`${import.meta.env.VITE_SERVER}/products/editProduct/${data.id}`, data)
+            const response = await axios.put(`${import.meta.env.VITE_SERVER}/products/editProduct/${data.id}`, data, { withCredentials: true })
             if (response.status === 200) {
                 setAlert("success", response.data.message);
                 getSaleProducts();

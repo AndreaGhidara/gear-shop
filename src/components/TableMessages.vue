@@ -25,7 +25,7 @@ function clearAllert() {
 async function getMessagesForOwner() {
 
     try {
-        const response = await axios.get(`${import.meta.env.VITE_SERVER}/messages/messages-for-owner`);
+        const response = await axios.get(`${import.meta.env.VITE_SERVER}/messages/messages-for-owner`, { withCredentials: true });
 
         if (response.status !== 200) {
             console.log('errore status');
@@ -67,7 +67,7 @@ async function setStatus(id, newStatus, oldStaus) {
     }
 
     try {
-        const response = await axios.put(`${import.meta.env.VITE_SERVER}/messages/edit/${id}`, { data: newStatus })
+        const response = await axios.put(`${import.meta.env.VITE_SERVER}/messages/edit/${id}`, { data: newStatus }, { withCredentials: true })
 
         if (response.status === 200) {
             getMessagesForOwner()
