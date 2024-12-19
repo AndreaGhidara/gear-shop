@@ -22,6 +22,11 @@ const router = createRouter({
             name: 'private',
             component: () => import('../pages/PrivatePage.vue'),
         },
+        {
+            path: '/login',
+            name : 'login',
+            component: () => import('../pages/AuthPage.vue'),
+        }
     ],
 })
 

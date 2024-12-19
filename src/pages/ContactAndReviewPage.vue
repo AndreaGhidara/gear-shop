@@ -1,7 +1,6 @@
 <script setup>
 import FormMessageForOwner from '../components/forms/FormMessageForOwner.vue';
 import FormSiteReview from '../components/forms/FormSiteReview.vue';
-import ReviewsComponent from '../components/ReviewsComponent.vue';
 
 </script>
 
@@ -14,9 +13,7 @@ import ReviewsComponent from '../components/ReviewsComponent.vue';
     <section>
         <FormSiteReview />
     </section>
-    <section class="container mx-auto border-bottom pt-3 pb-3">
-        <ReviewsComponent />
-    </section>
+    
 </template>
 
 <style></style>

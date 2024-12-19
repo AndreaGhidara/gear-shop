@@ -2,27 +2,47 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import Modal from './Modal.vue';
+import Allert from './Allert.vue';
 
 
 const messagesForOwner = ref([]);
 const headerTableTitles = ref([])
 
+const alertState = ref("");
+const alertText = ref("");
 
-function getMessagesForOwner() {
-    axios.get(`${import.meta.env.VITE_SERVER}/messages/messages-for-owner`)
-        .then(response => {
-            console.log(response.data.data);
-            if (response.data) {
-                headerTableTitles.value = Object.keys(response.data.data[0]);
-                headerTableTitles.value.push("action");
-                messagesForOwner.value = response.data.data;
+function setAlert(state, message) {
+    alertState.value = state;
+    alertText.value = message;
+}
 
-            }
+function clearAllert() {
+    setTimeout(() => {
+        setAlert("", "")
+    }, 5000);
+}
 
-        })
-        .catch(error => {
-            console.error(error);
-        })
+async function getMessagesForOwner() {
+
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_SERVER}/messages/messages-for-owner`);
+
+        if (response.status !== 200) {
+            console.log('errore status');
+            return;
+        }
+
+        const messages = response.data.data;
+        headerTableTitles.value = Object.keys(messages[0]);
+        headerTableTitles.value.push("action");
+        messagesForOwner.value = messages;
+
+    } catch (error) {
+        console.error(error);
+        setAlert("danger", "Errore con il server")
+
+    }
+
 }
 
 function stateOfMessage(status) {
@@ -38,7 +58,7 @@ function stateOfMessage(status) {
     }
 }
 
-function setStatus(id, newStatus, oldStaus) {
+async function setStatus(id, newStatus, oldStaus) {
     // console.log(id, newStatus, oldStaus);
 
     // Se il veccio stato è uguale al nuovo stato, evito di fare la chiamata;
@@ -46,16 +66,19 @@ function setStatus(id, newStatus, oldStaus) {
         return;
     }
 
-    axios.put(`${import.meta.env.VITE_SERVER}/messages/edit/${id}`, { data: newStatus })
-        .then(response => {
-            if (response.status === 200) {
-                getMessagesForOwner()
-            }
-        })
-        .catch(error => {
-            console.error(error);
-            alert('problemi');
-        })
+    try {
+        const response = await axios.put(`${import.meta.env.VITE_SERVER}/messages/edit/${id}`, { data: newStatus })
+
+        if (response.status === 200) {
+            getMessagesForOwner()
+        }
+
+    } catch (error) {
+        console.error(error);
+        setAlert("danger", "Errore con il server")
+
+    }
+
 }
 
 onMounted(() => {
@@ -65,6 +88,7 @@ onMounted(() => {
 </script>
 
 <template>
+    <Allert :isVisible="alertState.length > 0" :status="alertState" :text="alertText" />
     <div>
         <table v-if="headerTableTitles.length > 0" class="table table-sm table-bordered border-primary caption-top">
             <caption>Messages for owner</caption>

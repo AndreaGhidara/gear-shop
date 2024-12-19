@@ -1,33 +1,19 @@
 <script setup>
-import axios from 'axios';
-import { onMounted, ref } from 'vue';
-
-const server = 'http://localhost:3000'
-const reviews = ref([]);
-
-function getReview() {
-    axios.get(`${server}/reviews`)
-        .then(response => {
-            console.log(response.data);
-            if (response.data) {
-                reviews.value = response.data.data
-            }
-        })
-        .catch(error => {
-            console.error(error);
-        })
-}
-
-onMounted(() => {
-    getReview();
+const props = defineProps({
+    reviews: {
+        type: Array,
+        required: true,
+    },
 })
+
+
 
 </script>
 
 <template>
-    <div v-if="reviews && reviews.length > 0">
-        <div class="row d-flex flex-wrap">
-            <div v-for="review in reviews" class="col">
+    <div v-if="props.reviews && props.reviews.length > 0">
+        <div class="row d-flex flex-wrap gap-1">
+            <div v-for="review in props.reviews" class="col">
                 <div class="card border-light mb-3 h-100" style="max-width: 18rem;">
                     <div class="card-header bg-primary d-flex flex-row-reverse ">
                         <span class="pe-2 ps-2 text-white fw-bold">

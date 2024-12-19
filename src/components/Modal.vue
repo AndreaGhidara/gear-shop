@@ -15,11 +15,6 @@ defineProps({
     },
 });
 
-function handleAction(button) {
-    if (button.action) {
-        button.action();
-    }
-}
 </script>
 
 <template>
@@ -46,7 +41,7 @@ function handleAction(button) {
 
                     <!-- Footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                        <!-- <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button> -->
 
                         <slot name="footer"></slot>
                     </div>

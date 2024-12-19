@@ -16,6 +16,10 @@ defineProps({
     discount: {
         type: Number,
         required: false,
+    },
+    img: {
+        type: String,
+        required: true
     }
 });
 
@@ -27,7 +31,7 @@ function discountPrice(price, discount) {
 
 <template>
     <div class="card shadow-sm h-100">
-        <img src="/logo_icon.png" width="100%" height="300px" class=" object-fit-contain" alt="">
+        <img :src="img" width="100%" height="300px" class=" object-fit-contain" alt="">
         <div class="card-body d-flex flex-column justify-content-between">
             <div>
                 <h2>
@@ -64,5 +68,4 @@ function discountPrice(price, discount) {
     </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

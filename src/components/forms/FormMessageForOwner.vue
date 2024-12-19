@@ -1,6 +1,7 @@
 <script setup>
 import axios from 'axios';
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref } from 'vue';
+import Allert from '../Allert.vue';
 
 const messageForAdmin = reactive({
     name: "",
@@ -21,19 +22,38 @@ const isFormInvalid = computed(() => {
         messageForAdmin.message.length < 4
 });
 
-function sendMessage(data) {
-    const server = 'http://localhost:3000'
 
-    axios.post(`${server}/messages/message-for-owner`, data)
-        .then(response => {
-            console.log(response.data);
-            alert("Messaggio inviato con successo!");
-            resetForm();
-        })
-        .catch(error => {
-            console.error(error);
-            alert("Errore con il server");
-        })
+const alertState = ref("");
+const alertText = ref("");
+
+function setAlert(state, message) {
+    alertState.value = state;
+    alertText.value = message;
+}
+
+function clearAllert() {
+    setTimeout(() => {
+        setAlert("", "")
+    }, 5000);
+}
+
+
+async function sendMessage(data) {
+
+    try {
+        const response = await axios.post(`${import.meta.env.VITE_SERVER}/messages/message-for-owner`, data);
+
+        if (response.status === 200) {
+            setAlert("success", response.data.message);
+            clearAllert();
+        }
+
+        resetForm();
+    } catch (error) {
+        setAlert("danger", "Errore del server");
+        console.error(error);
+    }
+
 }
 
 function checkValidMail(email) {
@@ -102,6 +122,7 @@ function resetForm() {
         Nome -> required
         Email -> required
         Messaggio -> required -->
+    <Allert :isVisible="alertState.length > 0" :status="alertState" :text="alertText" />
     <div class="container border-bottom pb-3">
         <h2 class="text-uppercase fw-semibold fs-4">Messaggio per il proprietario del sito</h2>
         <div class="row d-flex flex-column">
